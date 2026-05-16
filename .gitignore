@@ -1,0 +1,5 @@
+# Ignora tutti i file con estensione .slxc
+*.slxc
+
+# Ignora tutte le cartelle slprj (e il loro contenuto) ovunque si trovino nel progetto
+slprj/
