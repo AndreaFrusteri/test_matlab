@@ -48,6 +48,23 @@ TaoFilterOmega = b_filter*TSample/a_filter
 Tau_I     = 0.001;    % 1 ms  - Filtro per Isen_A: molto veloce, taglia solo il rumore PWM ad alta frequenza
 Tau_Vdc   = 0.030;    % 30 ms - Filtro per Vdc_link: lento, stabilizza la lettura ignorando i transitori di switching
 
+% Moodel parameters
+
+tao_m = R*J/(Km^2)
+
+tao_m=85e-3;
+
+
 %% PI Current parameters
 
-%......
+tao_pid_current = 1e-3
+
+Kpi = L/tao_pid_current
+Tii = L/R
+
+tao_pid_speed = 10*tao_pid_current;
+
+Kpw = J/(tao_pid_speed*Km)
+Tiw = tao_m
+
+comport="COM6";
