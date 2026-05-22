@@ -7,10 +7,10 @@ close all; clear; clc;
 L = 4.1e-3; 	% Inductance (H)
 R = 3.2;     	% Resistance (Ohm) 
 Km = 0.11;   	% Torque constant (Nm/A)
-J = 0.352e-4; 	% Rotor Inertia(kg m2) DC motor
-
+Jdc = 0.352e-4; 	% Rotor Inertia(kg m2) DC motor
+Jbl = 0.380e-4;
 % I due motori hanno gli alberi calettati J=Jdc+Jbl
-J=J*2;          % Inserire J Dynamo da datasheet
+J=Jdc+Jbl;          % Inserire J Dynamo da datasheet
 
 b =(Km*0.3)/((1750*(2*pi))/60);        	% Coefficient of friction
 
@@ -65,8 +65,8 @@ TaoFilterOffsetCurrent=1;
 % Scelgo a=0.1 e b=0.9
 a_filter = 0.1;
 b_filter = 0.9;
-TaoFilterOmega = b_filter*TSample/a_filter
-%TaoFilterOmega=1000;
+%TaoFilterOmega = b_filter*TSample/a_filter
+TaoFilterOmega=5e-3;
 
 % Costanti di tempo per i filtri (Tau)
 %TaoFilterOmega = 0.015;    % 15 ms - Filtro per omegaRPM: abbastanza lento per l'encoder, veloce per la meccanica
@@ -85,4 +85,4 @@ tao_pid_speed = 10*tao_pid_current;
 Kpw = J/(tao_pid_speed*Km)
 Tiw = tao_m
 
-comport="COM6";
+comport="COM10";
