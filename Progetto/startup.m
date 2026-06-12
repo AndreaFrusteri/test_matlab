@@ -4,21 +4,33 @@ close all; clear; clc;
 
 %% DC MOTOR PARAMETER
 
-L = 4.1e-3; 	% Inductance (H)
-R = 3.2;     	% Resistance (Ohm) 
-Km = 0.11;   	% Torque constant (Nm/A)
-Jdc = 0.352e-4; 	% Rotor Inertia(kg m2) DC motor
-Jbl = 0.380e-4;
+% Parametri da datasheet
+
+%tao_m=85e-3;    % Da datasheet
+%L = 4.1e-3; 	% Inductance (H)
+%R = 3.2;     	% Resistance (Ohm) 
+%Km = 0.11;   	% Torque constant (Nm/A)
+%Jdc = 0.352e-4; 	% Rotor Inertia(kg m2) DC motor
+%Jbl = 0.380e-4;
 % I due motori hanno gli alberi calettati J=Jdc+Jbl
-J=Jdc+Jbl;          % Inserire J Dynamo da datasheet
+%J=Jdc+Jbl;          % Inserire J Dynamo da datasheet
 
-b =(Km*0.3)/((1750*(2*pi))/60);        	% Coefficient of friction
 
+%b =(Km*0.3)/((1750*(2*pi))/60);        	% Coefficient of friction
+%Parametri da estimation LSQ
+L =  0.0062;
+R = 3.2545;
+J = 1.0043e-04;
+b = 11e-04;
+Km = 0.11; % da datasheet
 % Moodel parameters
 
-%tao_m = R*J/(Km^2) Calcolato
+tao_m = J/b; % Calcolato
 
-tao_m=85e-3;    % Da datasheet
+
+
+
+
 
 %% CONVERSION
 RadToRpm=60/(2*pi); %Convert rad->RPM
@@ -85,4 +97,4 @@ tao_pid_speed = 10*tao_pid_current;
 Kpw = J/(tao_pid_speed*Km)
 Tiw = tao_m
 
-comport="COM10";
+comport="COM6";
