@@ -139,5 +139,3 @@ GammaZ = (z^2)-(z^1)+0.25
 %GammaZ = [1  -1.5  0.75  -0.125];
 %GammaZ = tf(GammaZ, 1, TSample);
 GammaZ=40*(z-0.8)*(z-0.9)*(z-0.7)
-%% Porta COM
-comport="COM6";

@@ -15,3 +15,6 @@ disp('Parametri caricati con successo nel Workspace.');
 %BasePerTracing
 
 %disp('Apertura simulink.');
+
+%% Porta COM
+comport="COM6";
