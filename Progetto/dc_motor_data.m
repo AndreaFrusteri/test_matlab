@@ -87,9 +87,9 @@ TaoFilterOmega=5e-3;
 %% PI controller
 
 % Parametri anello corrente
-tao_pid_current = 1e-3 
+tao_pid_current = 1e-3;
 
-Kpi = L/tao_pid_current
+Kpi = L/tao_pid_current;
 Tii = L/R
 
 % Parametri anello velocità
@@ -103,39 +103,59 @@ s=tf('s');
 z=tf('z',TSample);
 
 %DC Motor continuous transfer function
-Gmot=tf([Km],[L*J R*J Km*Km]);    % b == 0
+%Gmot=tf([Km],[L*J R*J Km*Km]);    % b == 0
 
-%Gmot=tf([Km],[L*J R*J+b*L Km*Km+b*R]); % b != 0
-Gmot=24*Gmot;
+Gmot=tf([Km],[L*J R*J+b*L Km*Km+b*R]); % b != 0
+Gmot=32*Gmot;   % 32 V di supply
 
 %DC Motor discrete transfer function
 Gpz=c2d(Gmot,TSample)
 
 %% DeadBeat Controller
 
+% Ingresso considerato a gradino
+
+% Il grado relativo di Gpz è r = 1, quindi per causalità k>=1
 k=1;
 
-Dz_deadbeat = (1/Gpz)*((z^-k)/(1-(z^-k)))
+% Gpz è stabile [|poli| < 1] e a fase minima [|zeri| < 1] 
+
+% Definisco la dinamica desiderata Gmz
+
+Gmz = z^-k; % Ritardo puro
+
+Dz_deadbeat = minreal((1/Gpz)*((Gmz)/(1-(Gmz))))
+[num_Dz_deadbeat, den_Dz_deadbeat] = tfdata(Dz_deadbeat, 'v')
+
+% Antiwindup 
+
+%gamma deve essere causale [], stabile [|poli| < 1], le radici di gamma 
+
+%gamma_deadbeat = [1 1 0.25] % (0.5+z)^2
+gamma_deadbeat = [1 0 0] % z^2
+
+%gamma_deadbeat=40*(z-0.8)*(z-0.9)*(z-0.7)
+
 
 %% Dahlin Controller
 
 lambda=0.010;
 Theta=0.0001;
-N=floor(Theta/TSample)
+N=floor(Theta/TSample);
 
 %Yz= ( 1-exp(-TSample/lambda) )*z^(-N-1) / (1-z^-1)*(1-exp(-TSample/lambda)*z^-1)
 
-Gmz= ( 1-exp(-TSample/lambda) )*z^(-N-1) / (1-exp(-TSample/lambda)*z^-1)
+Gmz= ( 1-exp(-TSample/lambda) )*z^(-N-1) / (1-exp(-TSample/lambda)*z^-1);
 
-Dz_dahlin = 1/Gpz *(Gmz/(1-Gmz))
+Dz_dahlin = 1/Gpz *(Gmz/(1-Gmz));
 
-Dz_dahlin =minreal(Dz_dahlin)
+Dz_dahlin =minreal(Dz_dahlin);
 
 
 %% Antiwindup
 
-GammaZ = (z^2)-(z^1)+0.25
+GammaZ = (z^2)-(z^1)+0.25;
 
 %GammaZ = [1  -1.5  0.75  -0.125];
 %GammaZ = tf(GammaZ, 1, TSample);
-GammaZ=40*(z-0.8)*(z-0.9)*(z-0.7)
+GammaZ=40*(z-0.8)*(z-0.9)*(z-0.7);
