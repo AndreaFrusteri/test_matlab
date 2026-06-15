@@ -131,8 +131,8 @@ Dz_deadbeat = minreal((1/Gpz_strong)*((Gmz)/(1-(Gmz))));
 [num_Dz_deadbeat, den_Dz_deadbeat] = tfdata(Dz_deadbeat, 'v');
 
 disp('Controllore Deadbeat:  '); Dz_deadbeat
-disp('con zeri: '); zero(Gpz)
-disp('con poli: '); pole(Gpz)
+disp('con zeri: '); zero(Dz_deadbeat)
+disp('con poli: '); pole(Dz_deadbeat)
 
 % Antiwindup 
 
