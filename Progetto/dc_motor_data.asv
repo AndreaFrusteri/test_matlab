@@ -106,10 +106,10 @@ z=tf('z',TSample);
 %Gmot=tf([Km],[L*J R*J Km*Km]);    % b == 0
 
 Gmot=tf([Km],[L*J R*J+b*L Km*Km+b*R]); % b != 0
+Gmot=32*Gmot;   % 32 V di supply
 
 %DC Motor discrete transfer function
-Gpz = c2d(Gmot,TSample);
-Gpz_strong =c2d(32*Gmot,TSample);
+Gpz=c2d(Gmot,TSample);
 disp('Plant Discretizzato:  '); Gpz
 disp('con zeri: '); zero(Gpz)
 disp('con poli: '); pole(Gpz)
@@ -127,7 +127,7 @@ k=1;
 
 Gmz = z^-k; % Ritardo puro
 
-Dz_deadbeat = minreal((1/Gpz_strong)*((Gmz)/(1-(Gmz))));
+Dz_deadbeat = minreal((1/Gpz)*((Gmz)/(1-(Gmz))));
 [num_Dz_deadbeat, den_Dz_deadbeat] = tfdata(Dz_deadbeat, 'v');
 
 disp('Controllore Deadbeat:  '); Dz_deadbeat
@@ -158,7 +158,7 @@ disp('Gamma per antiwindup del deadbeat:  '); gamma_deadbeat
 %DC Motor continuous transfer function
 %Gmot=tf([Km],[L*J R*J Km*Km]);    % b == 0
 Gmot=tf([Km],[L*J R*J+b*L Km*Km+b*R]); % b != 0
-Gpz=c2d(Gmot,TSample);
+
 
 lambda=0.010;
 Theta=0.0001;

@@ -2,8 +2,7 @@
 
 close all; clear; clc;
 
-% 1. Inizializzazione dati dinamo
-mcb_pmsm_foc_qep_f28379d_data; 
+%mcb_pmsm_foc_qep_f28379d_data; 
 
 % 2. Inizializzazione dati motore dc e controllori per motore dc
 dc_motor_data
